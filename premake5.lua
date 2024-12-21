@@ -1,6 +1,7 @@
 project "glfw"
     kind "StaticLib"
     language "C"
+    staticruntime "On"
 
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("intermediate/" .. outputdir .. "/%{prj.name}")
@@ -31,9 +32,8 @@ project "glfw"
     }
 
     filter "system:Windows"
-        buildoptions { "-std=c11", "-lgdi32"}
+        -- buildoptions { "-std=c11", "-lgdi32"}
         systemversion "latest"
-        staticruntime "On"
     
         files
         {
@@ -53,5 +53,12 @@ project "glfw"
 
         defines { "_GLFW_WIN32", "_CRT_SECURE_NO_WARNINGS" }
 
-    filter {"system:Windows", "configurations:Release"}
-        buildoptions "/MT"
+    -- filter {"system:Windows", "configurations:Release"}
+    --     buildoptions "/MT"
+    filter "configurations:Debug"
+        runtime "Debug"
+        symbols "On"
+    
+    filter "configurations:Release"
+        runtime "Release"
+        optimize "On"
